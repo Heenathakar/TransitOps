@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Expense Management</h2>
+
+
+<table class="table table-bordered">
+
+
+<tr>
+
+<th>Type</th>
+<th>Amount</th>
+<th>Date</th>
+
+</tr>
+
+
+{% for expense in expenses %}
+
+<tr>
+
+<td>{{expense.expense_type}}</td>
+
+<td>{{expense.amount}}</td>
+
+<td>{{expense.date}}</td>
+
+</tr>
+
+
+{% endfor %}
+
+
+</table>
+
+
+{% endblock %}

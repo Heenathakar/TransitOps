@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Trip,FuelLog,Expense
+
+
+admin.site.register(Trip)
+
+admin.site.register(FuelLog)
+
+admin.site.register(Expense)

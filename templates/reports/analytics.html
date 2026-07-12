@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Operational Analytics | TransitOps
+{% endblock %}
+
+{% block page_title %}
+Operational Analytics
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 rounded-4 shadow-sm p-4">
+            <h5 class="fw-bold mb-4 text-dark"><i class="fas fa-database me-2 text-primary"></i>Operational Data Tables</h5>
+
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-tabs border-bottom mb-4" id="analyticsTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="vehicles-tab" data-bs-toggle="tab" data-bs-target="#vehicles" type="button" role="tab" aria-controls="vehicles" aria-selected="true">
+                        <i class="fas fa-bus me-1"></i> Vehicles ({{ vehicles|length }})
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="drivers-tab" data-bs-toggle="tab" data-bs-target="#drivers" type="button" role="tab" aria-controls="drivers" aria-selected="false">
+                        <i class="fas fa-id-card me-1"></i> Drivers ({{ drivers|length }})
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="trips-tab" data-bs-toggle="tab" data-bs-target="#trips" type="button" role="tab" aria-controls="trips" aria-selected="false">
+                        <i class="fas fa-route me-1"></i> Trips ({{ trips|length }})
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="analyticsTabContent">
+                <!-- Vehicles Tab -->
+                <div class="tab-pane fade show active" id="vehicles" role="tabpanel" aria-labelledby="vehicles-tab">
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Vehicle Number</th>
+                                    <th>Model</th>
+                                    <th>Type</th>
+                                    <th>Load Capacity</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for vehicle in vehicles %}
+                                <tr>
+                                    <td><strong>{{ vehicle.vehicle_number }}</strong></td>
+                                    <td>{{ vehicle.model }}</td>
+                                    <td>{{ vehicle.vehicle_type }}</td>
+                                    <td>{{ vehicle.capacity }} kg</td>
+                                    <td>
+                                        <span class="badge {% if vehicle.status == 'Available' %}bg-success-soft text-success{% else %}bg-warning-soft text-warning{% endif %}">
+                                            {{ vehicle.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">No vehicles found in database.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Drivers Tab -->
+                <div class="tab-pane fade" id="drivers" role="tabpanel" aria-labelledby="drivers-tab">
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>License Number</th>
+                                    <th>Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for driver in drivers %}
+                                <tr>
+                                    <td><strong>{{ driver.name }}</strong></td>
+                                    <td>{{ driver.phone }}</td>
+                                    <td><code>{{ driver.license_number }}</code></td>
+                                    <td>{{ driver.address }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No drivers found in database.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Trips Tab -->
+                <div class="tab-pane fade" id="trips" role="tabpanel" aria-labelledby="trips-tab">
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Trip ID</th>
+                                    <th>Source</th>
+                                    <th>Destination</th>
+                                    <th>Vehicle</th>
+                                    <th>Driver</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for trip in trips %}
+                                <tr>
+                                    <td><strong>{{ trip.trip_number }}</strong></td>
+                                    <td>{{ trip.source }}</td>
+                                    <td>{{ trip.destination }}</td>
+                                    <td>{{ trip.vehicle.vehicle_number }}</td>
+                                    <td>{{ trip.driver.name }}</td>
+                                    <td>
+                                        <span class="badge {% if trip.status == 'Completed' %}bg-success-soft text-success{% elif trip.status == 'Active' %}bg-info-soft text-info{% else %}bg-warning-soft text-warning{% endif %}">
+                                            {{ trip.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center py-4 text-muted">No trips recorded.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .bg-success-soft { background-color: rgba(34, 197, 94, 0.1) !important; color: #22c55e !important; }
+    .bg-warning-soft { background-color: rgba(234, 179, 8, 0.1) !important; color: #eab308 !important; }
+    .bg-info-soft { background-color: rgba(59, 130, 246, 0.1) !important; color: #3b82f6 !important; }
+    .nav-tabs .nav-link { color: var(--text-secondary); font-weight: 500; border: none; padding: 0.75rem 1.25rem; }
+    .nav-tabs .nav-link.active { color: var(--primary); border-bottom: 3px solid var(--primary); background: transparent; }
+</style>
+{% endblock %}

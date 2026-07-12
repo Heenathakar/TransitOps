@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Reports Dashboard | TransitOps
+{% endblock %}
+
+{% block page_title %}
+Reports Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="row g-3 mb-4">
+    <!-- Vehicles count -->
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card border-0 rounded-4 shadow-sm h-100 text-center p-3">
+            <div class="text-primary mb-2" style="font-size: 1.8rem;"><i class="fas fa-bus"></i></div>
+            <h4 class="fw-bold mb-0 text-dark">{{ vehicle_count }}</h4>
+            <span class="text-muted small">Total Vehicles</span>
+        </div>
+    </div>
+    
+    <!-- Drivers count -->
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card border-0 rounded-4 shadow-sm h-100 text-center p-3">
+            <div class="text-success mb-2" style="font-size: 1.8rem;"><i class="fas fa-id-card"></i></div>
+            <h4 class="fw-bold mb-0 text-dark">{{ driver_count }}</h4>
+            <span class="text-muted small">Total Drivers</span>
+        </div>
+    </div>
+
+    <!-- Trips count -->
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card border-0 rounded-4 shadow-sm h-100 text-center p-3">
+            <div class="text-info mb-2" style="font-size: 1.8rem;"><i class="fas fa-route"></i></div>
+            <h4 class="fw-bold mb-0 text-dark">{{ trip_count }}</h4>
+            <span class="text-muted small">Total Trips</span>
+        </div>
+    </div>
+
+    <!-- Maintenance logs count -->
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card border-0 rounded-4 shadow-sm h-100 text-center p-3">
+            <div class="text-danger mb-2" style="font-size: 1.8rem;"><i class="fas fa-tools"></i></div>
+            <h4 class="fw-bold mb-0 text-dark">{{ maintenance_count }}</h4>
+            <span class="text-muted small">Maintenance Logs</span>
+        </div>
+    </div>
+
+    <!-- Fuel Logs count -->
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card border-0 rounded-4 shadow-sm h-100 text-center p-3">
+            <div class="text-warning mb-2" style="font-size: 1.8rem;"><i class="fas fa-gas-pump"></i></div>
+            <h4 class="fw-bold mb-0 text-dark">{{ fuel_count }}</h4>
+            <span class="text-muted small">Fuel Entries</span>
+        </div>
+    </div>
+
+    <!-- Expenses count -->
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card border-0 rounded-4 shadow-sm h-100 text-center p-3">
+            <div class="text-secondary mb-2" style="font-size: 1.8rem;"><i class="fas fa-wallet"></i></div>
+            <h4 class="fw-bold mb-0 text-dark">{{ expense_count }}</h4>
+            <span class="text-muted small">Expense Logs</span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-8">
+        <div class="card border-0 rounded-4 shadow-sm p-4 mb-4">
+            <h5 class="fw-bold mb-3 text-dark"><i class="fas fa-file-download me-2 text-primary"></i>Export Data Reports</h5>
+            <p class="text-muted small mb-4">Select the database module you wish to compile and download as a CSV file for auditing.</p>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{% url 'export_csv' %}" class="btn btn-primary rounded-3">
+                    <i class="fas fa-file-csv me-2"></i>Export Vehicles (CSV)
+                </a>
+                <button class="btn btn-outline-secondary rounded-3" disabled>
+                    <i class="fas fa-file-csv me-2"></i>Export Trips (CSV)
+                </button>
+                <button class="btn btn-outline-secondary rounded-3" disabled>
+                    <i class="fas fa-file-csv me-2"></i>Export Drivers (CSV)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+        <div class="card border-0 rounded-4 shadow-sm p-4 h-100">
+            <h5 class="fw-bold mb-3 text-dark"><i class="fas fa-info-circle me-2 text-indigo"></i>Report Links</h5>
+            <div class="list-group list-group-flush">
+                <a href="{% url 'analytics' %}" class="list-group-item list-group-item-action border-0 px-0 py-2.5 d-flex align-items-center justify-content-between text-dark">
+                    <span><i class="fas fa-table me-2 text-muted"></i>Operational Analytics</span>
+                    <i class="fas fa-chevron-right text-muted small"></i>
+                </a>
+                <a href="{% url 'charts' %}" class="list-group-item list-group-item-action border-0 px-0 py-2.5 d-flex align-items-center justify-content-between text-dark">
+                    <span><i class="fas fa-chart-bar me-2 text-muted"></i>Fleet Visualizations</span>
+                    <i class="fas fa-chevron-right text-muted small"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .bg-indigo-soft { background-color: rgba(99, 102, 241, 0.1); }
+    .text-indigo { color: #6366f1; }
+</style>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Fleet Visualizations | TransitOps
+{% endblock %}
+
+{% block page_title %}
+Fleet Visualizations
+{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <!-- Bar Chart -->
+    <div class="col-12 col-lg-8">
+        <div class="card border-0 rounded-4 shadow-sm p-4">
+            <h5 class="fw-bold mb-3 text-dark"><i class="fas fa-chart-bar me-2 text-primary"></i>Platform Volumes Index</h5>
+            <div style="height: 320px; position: relative;">
+                <canvas id="metricsBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doughnut Chart -->
+    <div class="col-12 col-lg-4">
+        <div class="card border-0 rounded-4 shadow-sm p-4 h-100">
+            <h5 class="fw-bold mb-3 text-dark"><i class="fas fa-chart-pie me-2 text-success"></i>Distribution Ratio</h5>
+            <div style="height: 320px; position: relative;">
+                <canvas id="metricsDoughnutChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Retrieve count metrics passed by view context
+        const vehicles = {{ vehicle_count|default:0 }};
+        const drivers = {{ driver_count|default:0 }};
+        const maintenance = {{ maintenance_count|default:0 }};
+        const trips = {{ trip_count|default:0 }};
+
+        // 1. Bar Chart Setup
+        const ctxBar = document.getElementById('metricsBarChart');
+        if (ctxBar) {
+            new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['Vehicles', 'Drivers', 'Trips', 'Maintenance Logs'],
+                    datasets: [{
+                        label: 'Total Record Volumes',
+                        data: [vehicles, drivers, trips, maintenance],
+                        backgroundColor: [
+                            'rgba(99, 102, 241, 0.7)',
+                            'rgba(34, 197, 94, 0.7)',
+                            'rgba(14, 165, 233, 0.7)',
+                            'rgba(239, 68, 68, 0.7)'
+                        ],
+                        borderColor: [
+                            '#6366f1',
+                            '#22c55e',
+                            '#0ea5e9',
+                            '#ef4444'
+                        ],
+                        borderWidth: 1.5,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // 2. Doughnut Chart Setup
+        const ctxDoughnut = document.getElementById('metricsDoughnutChart');
+        if (ctxDoughnut) {
+            new Chart(ctxDoughnut, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Vehicles', 'Drivers', 'Trips'],
+                    datasets: [{
+                        data: [vehicles, drivers, trips],
+                        backgroundColor: [
+                            '#6366f1',
+                            '#22c55e',
+                            '#0ea5e9'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

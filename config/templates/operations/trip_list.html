@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>Trip Management</h2>
+
+<a href="{% url 'trip_add' %}" class="btn btn-primary"> Add Trip </a>
+
+<table class="table table-bordered mt-3">
+  <tr>
+    <th>Vehicle</th>
+    <th>Driver</th>
+    <th>Source</th>
+    <th>Destination</th>
+  </tr>
+
+  {% for trip in trips %}
+
+  <tr>
+    <td>{{trip.vehicle_number}}</td>
+
+    <td>{{trip.driver_name}}</td>
+
+    <td>{{trip.source}}</td>
+
+    <td>{{trip.destination}}</td>
+  </tr>
+
+  {% endfor %}
+</table>
+
+{% endblock %}

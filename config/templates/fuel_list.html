@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>Fuel Logs</h2>
+
+<table class="table table-bordered">
+  <tr>
+    <th>Vehicle</th>
+    <th>Liters</th>
+    <th>Amount</th>
+  </tr>
+
+  {% for fuel in fuels %}
+
+  <tr>
+    <td>{{fuel.vehicle_number}}</td>
+
+    <td>{{fuel.liters}}</td>
+
+    <td>{{fuel.amount}}</td>
+  </tr>
+
+  {% endfor %}
+</table>
+
+{% endblock %}

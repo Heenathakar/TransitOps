@@ -21,3 +21,10 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'role', 'phone', 'department')
+    list_filter = ('role', 'department')
+    search_fields = ('user__username', 'user__first_name', 'user__last_name', 'phone', 'department')
+
+admin.site.register(UserProfile, UserProfileAdmin)

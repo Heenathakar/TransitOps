@@ -1,0 +1,78 @@
+/* ==========================================
+   TransitOps Dashboard Stylesheet
+   ========================================== */
+
+/* Main layout wrapper */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* KPI Cards styling override */
+.kpi-card {
+    border-radius: var(--radius-lg);
+    background-color: var(--bg-card);
+    transition: var(--transition-smooth) !important;
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(99, 102, 241, 0.2) !important;
+}
+
+/* Timeline Layout */
+.timeline {
+    position: relative;
+    padding-left: 8px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 23px;
+    width: 2px;
+    background: var(--border-color);
+    z-index: 1;
+}
+
+.timeline > div {
+    position: relative;
+    z-index: 2;
+    background-color: var(--bg-card);
+}
+
+.timeline-badge {
+    box-shadow: 0 0 0 4px var(--bg-card);
+}
+
+/* Dropdown styling overrides */
+.dropdown-menu {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.dropdown-item {
+    color: var(--text-primary);
+    transition: var(--transition-smooth);
+}
+
+.dropdown-item:hover {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+/* Quick Action Panel links */
+.quick-login-badge {
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.quick-login-badge:hover {
+    filter: brightness(1.1);
+}

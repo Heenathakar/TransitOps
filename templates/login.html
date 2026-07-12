@@ -1,0 +1,340 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | TransitOps</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon.png' %}">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient background glow elements */
+        .glow-sphere-1 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0) 70%);
+            top: -100px;
+            left: -100px;
+            z-index: 0;
+            animation: floating 8s ease-in-out infinite;
+        }
+
+        .glow-sphere-2 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.12) 0%, rgba(236, 72, 153, 0) 70%);
+            bottom: -150px;
+            right: -100px;
+            z-index: 0;
+            animation: floating 12s ease-in-out infinite reverse;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(20px) scale(1.05); }
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 10;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .brand-logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .input-group-text {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #818cf8;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+            color: #ffffff;
+        }
+
+        .form-control::placeholder {
+            color: #64748b;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .password-toggle:hover {
+            color: #ffffff;
+        }
+
+        .quick-login-badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .quick-login-badge:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.4);
+            color: #ffffff;
+        }
+
+        .footer-text {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-sphere-1"></div>
+    <div class="glow-sphere-2"></div>
+
+    <div class="login-container">
+        
+        <!-- Brand Header -->
+        <div class="text-center mb-4">
+            <h1 class="brand-logo mb-1"><i class="fas fa-route me-2"></i>TransitOps</h1>
+            <p class="text-muted">Smart Transport Operations Platform</p>
+        </div>
+
+        <div class="glass-card">
+            <h3 class="fw-bold mb-4 text-center">Sign In</h3>
+
+            <!-- Messages/Alerts -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} d-flex align-items-center mb-3 py-2 border-0 rounded-3 text-white bg-opacity-10 {% if message.tags == 'error' %}bg-danger{% else %}bg-success{% endif %}" role="alert">
+                        <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} me-2"></i>
+                        <div>{{ message }}</div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if form.errors %}
+                <div class="alert alert-danger d-flex align-items-center mb-3 py-2 border-0 rounded-3 text-white bg-opacity-10 bg-danger" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <div>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <p class="mb-0 small">{{ field.label }}: {{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <p class="mb-0 small">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+
+                <!-- Username field -->
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" required autofocus>
+                    </div>
+                </div>
+
+                <!-- Password field -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label for="password" class="form-label">Password</label>
+                        <a href="#" class="text-decoration-none text-indigo-300 style-link small text-muted">Forgot password?</a>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required>
+                        <span class="input-group-text password-toggle" onclick="togglePassword()"><i class="fas fa-eye-slash" id="toggleIcon"></i></span>
+                    </div>
+                </div>
+
+                <!-- Remember Me and Options -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                        <label class="form-check-label text-muted small" for="rememberMe">
+                            Remember session
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary w-100 mb-4 py-2.5">
+                    Login to Platform <i class="fas fa-arrow-right ms-2"></i>
+                </button>
+            </form>
+
+            <!-- Quick Login Section -->
+            <div class="border-top border-secondary pt-3 mt-3 opacity-75">
+                <p class="small text-muted mb-2 text-center"><i class="fas fa-key me-1"></i> Quick Login (Testing)</p>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="quick-login-badge d-flex align-items-center" onclick="fillCreds('admin', 'admin123')">
+                            <i class="fas fa-user-shield me-2 text-indigo-400"></i>
+                            <div>
+                                <span class="d-block fw-semibold text-white">Admin</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="quick-login-badge d-flex align-items-center" onclick="fillCreds('manager', 'manager123')">
+                            <i class="fas fa-user-tie me-2 text-success"></i>
+                            <div>
+                                <span class="d-block fw-semibold text-white">Manager</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="quick-login-badge d-flex align-items-center" onclick="fillCreds('dispatcher', 'dispatcher123')">
+                            <i class="fas fa-user-astronaut me-2 text-info"></i>
+                            <div>
+                                <span class="d-block fw-semibold text-white">Dispatcher</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="quick-login-badge d-flex align-items-center" onclick="fillCreds('driver', 'driver123')">
+                            <i class="fas fa-steering-wheel me-2 text-warning"></i>
+                            <div>
+                                <span class="d-block fw-semibold text-white">Driver</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-4 footer-text">
+            &copy; 2026 TransitOps. Designed for Team Work Distribution.
+        </div>
+
+    </div>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordField = document.getElementById("password");
+            const toggleIcon = document.getElementById("toggleIcon");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye");
+            } else {
+                passwordField.type = "password";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash");
+            }
+        }
+
+        // Fill credentials helper
+        function fillCreds(username, password) {
+            document.getElementById("username").value = username;
+            document.getElementById("password").value = password;
+        }
+    </script>
+</body>
+</html>

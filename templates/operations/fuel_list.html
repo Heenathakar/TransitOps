@@ -1,25 +1,98 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
 
-<h2>Fuel Logs</h2>
+{% block title %}Fuel Logs | TransitOps{% endblock %}
 
-<table class="table table-bordered">
-  <tr>
-    <th>Vehicle</th>
-    <th>Liters</th>
-    <th>Amount</th>
-  </tr>
+{% block page_title %}Fuel Logs{% endblock %}
 
-  {% for fuel in fuels %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+    <p class="text-muted mb-0 small">Track fuel consumption across all vehicles and trips.</p>
+    <a href="{% url 'fuel_add' %}" class="btn btn-primary rounded-3">
+        <i class="fas fa-plus me-2"></i>Log Fuel
+    </a>
+</div>
 
-  <tr>
-    <td>{{fuel.vehicle_number}}</td>
+<div class="card border-0 rounded-4 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead style="background: var(--bg-body);">
+                    <tr>
+                        <th class="px-4 py-3 fw-semibold text-muted small text-uppercase">Vehicle</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase d-none d-md-table-cell">Trip</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase">Liters</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase">Cost</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase d-none d-md-table-cell">Date</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fuel in fuels %}
+                    <tr>
+                        <td class="px-4 py-3">
+                            <span class="badge rounded-pill px-3 py-1"
+                                  style="background:rgba(245,158,11,.1);color:#f59e0b;">
+                                <i class="fas fa-bus me-1"></i>{{ fuel.vehicle }}
+                            </span>
+                        </td>
+                        <td class="py-3 d-none d-md-table-cell text-muted">{{ fuel.trip }}</td>
+                        <td class="py-3 fw-semibold">{{ fuel.liters }} L</td>
+                        <td class="py-3 fw-semibold">₹{{ fuel.cost }}</td>
+                        <td class="py-3 d-none d-md-table-cell text-muted">{{ fuel.date }}</td>
+                        <td class="py-3 pe-4 text-end">
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger rounded-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteFuelModal{{ fuel.pk }}">
+                                <i class="fas fa-trash me-1"></i>Delete
+                            </button>
 
-    <td>{{fuel.liters}}</td>
-
-    <td>{{fuel.amount}}</td>
-  </tr>
-
-  {% endfor %}
-</table>
-
+                            <div class="modal fade" id="deleteFuelModal{{ fuel.pk }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content border-0 shadow rounded-4">
+                                        <div class="modal-header border-0">
+                                            <h5 class="modal-title fw-bold">
+                                                <i class="fas fa-exclamation-triangle text-danger me-2"></i>Confirm Delete
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body pt-0">
+                                            <p class="text-muted">
+                                                Delete fuel log for <strong>{{ fuel.vehicle }}</strong>
+                                                on <strong>{{ fuel.date }}</strong>?
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer border-0 pt-0">
+                                            <button type="button" class="btn btn-light rounded-3"
+                                                    data-bs-dismiss="modal">Cancel</button>
+                                            <form method="POST"
+                                                  action="{% url 'fuel_delete' fuel.pk %}"
+                                                  class="d-inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger rounded-3">
+                                                    <i class="fas fa-trash me-1"></i>Yes, Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            <i class="fas fa-gas-pump mb-3 d-block" style="font-size:2.5rem;opacity:.25;"></i>
+                            <p class="mb-2">No fuel logs recorded yet.</p>
+                            <a href="{% url 'fuel_add' %}" class="btn btn-sm btn-primary rounded-3">
+                                <i class="fas fa-plus me-1"></i>Log First Fuel Entry
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

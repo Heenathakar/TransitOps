@@ -4,27 +4,26 @@ from . import views
 urlpatterns = [
 
     path(
-        "",
+        '',
         views.dashboard,
-        name="dashboard"
+        name='reports_dashboard'   # renamed to avoid conflict with accounts 'dashboard'
     ),
 
     path(
-        "analytics/",
+        'analytics/',
         views.analytics,
-        name="analytics"
+        name='analytics'
     ),
 
     path(
-        "charts/",
+        'charts/',
         views.charts,
-        name="charts"
+        name='charts'
     ),
 
     path(
-        "export/csv/",
+        'export/csv/',
         views.export_csv,
-        name="export_csv"
+        name='export_csv'
     ),
-
 ]

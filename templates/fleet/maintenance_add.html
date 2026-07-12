@@ -1,36 +1,72 @@
 {% extends 'base.html' %}
 
+{% block title %}Log Maintenance | TransitOps{% endblock %}
+
+{% block page_title %}Log Maintenance{% endblock %}
 
 {% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-7">
+        <div class="card border-0 rounded-4 shadow-sm">
+            <div class="card-body p-4 p-md-5">
 
+                <div class="d-flex align-items-center mb-4">
+                    <div class="rounded-3 me-3 d-flex align-items-center justify-content-center"
+                         style="width:48px;height:48px;background:rgba(239,68,68,.1);">
+                        <i class="fas fa-tools" style="font-size:1.2rem;color:#ef4444;"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-0">Maintenance Record</h4>
+                        <p class="text-muted small mb-0">Log a new maintenance or repair event</p>
+                    </div>
+                </div>
 
-<div class="container mt-4">
+                <form method="POST" novalidate>
+                    {% csrf_token %}
 
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Vehicle <span class="text-danger">*</span></label>
+                            {{ form.vehicle }}
+                            {% if form.vehicle.errors %}
+                                <div class="text-danger small mt-1">{{ form.vehicle.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label fw-semibold">Date <span class="text-danger">*</span></label>
+                            {{ form.date }}
+                            {% if form.date.errors %}
+                                <div class="text-danger small mt-1">{{ form.date.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label fw-semibold">Cost (₹) <span class="text-danger">*</span></label>
+                            {{ form.cost }}
+                            {% if form.cost.errors %}
+                                <div class="text-danger small mt-1">{{ form.cost.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Description <span class="text-danger">*</span></label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="text-danger small mt-1">{{ form.description.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
 
-<h2>Add Maintenance</h2>
+                    <div class="d-flex flex-wrap gap-2 mt-4 pt-3 border-top">
+                        <button type="submit" class="btn btn-primary rounded-3 px-4">
+                            <i class="fas fa-check me-2"></i>Save Record
+                        </button>
+                        <a href="{% url 'maintenance_list' %}" class="btn btn-light rounded-3 px-4 text-muted">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Maintenance
+                        </a>
+                    </div>
+                </form>
 
-
-<form method="POST">
-
-
-{% csrf_token %}
-
-
-{{form.as_p}}
-
-
-
-<button class="btn btn-success">
-
-Save
-
-</button>
-
-
-</form>
-
-
+            </div>
+        </div>
+    </div>
 </div>
-
-
 {% endblock %}

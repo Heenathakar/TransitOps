@@ -1,108 +1,167 @@
-<nav class="navbar navbar-expand-lg border-bottom px-4 py-2 sticky-top shadow-sm transition-all" style="background: var(--bg-card, rgba(255,255,255,0.8)); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-color: var(--border-color, #e2e8f0) !important;">
-    <div class="container-fluid">
-        <!-- Sidebar Toggle (Mobile) -->
-        <button class="btn btn-outline-secondary d-md-none me-2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg border-bottom px-3 px-md-4 py-2 sticky-top shadow-sm"
+     style="background: var(--bg-card, rgba(255,255,255,0.95));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-color: var(--border-color, #e2e8f0) !important;
+            z-index: 1050;">
+    <div class="container-fluid px-0">
+
+        <!-- Mobile: Sidebar Offcanvas Toggle -->
+        <button class="btn btn-outline-secondary btn-sm d-lg-none me-2 flex-shrink-0"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#mobileSidebar"
+                aria-controls="mobileSidebar"
+                aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
         </button>
 
         <!-- Brand logo -->
-        <a class="navbar-brand d-flex align-items-center fw-extrabold text-primary" href="{% url 'dashboard' %}" style="font-size: 1.5rem; letter-spacing: -0.5px; font-weight: 800; background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-            <i class="fas fa-route me-2"></i>
-            <span>TransitOps</span>
+        <a class="navbar-brand d-flex align-items-center fw-extrabold me-auto me-lg-3"
+           href="{% url 'dashboard' %}"
+           style="font-size: 1.35rem;
+                  letter-spacing: -0.5px;
+                  font-weight: 800;
+                  text-decoration: none;">
+            <i class="fas fa-route me-2" style="color: #6366f1;"></i>
+            <span style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+                         -webkit-background-clip: text;
+                         -webkit-text-fill-color: transparent;
+                         background-clip: text;">TransitOps</span>
         </a>
 
         <!-- Right Side Controls -->
-        <div class="d-flex align-items-center ms-auto">
-            
-            <!-- Quick Actions -->
-            <div class="dropdown me-3 d-none d-sm-block">
-                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1.5 dropdown-toggle" type="button" id="quickActionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-plus me-1"></i> Quick Action
+        <div class="d-flex align-items-center gap-2">
+
+            <!-- Quick Actions (hidden on xs) -->
+            <div class="dropdown d-none d-sm-flex">
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3"
+                        type="button"
+                        id="quickActionsDropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    <i class="fas fa-plus me-1"></i>
+                    <span class="d-none d-md-inline">Quick Action</span>
+                    <span class="d-md-none">Add</span>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-3" aria-labelledby="quickActionsDropdown">
-                    <li><a class="dropdown-item py-2" href="#"><i class="fas fa-plus-circle me-2 text-primary"></i>New Trip</a></li>
-                    <li><a class="dropdown-item py-2" href="#"><i class="fas fa-bus-alt me-2 text-success"></i>Add Vehicle</a></li>
-                    <li><a class="dropdown-item py-2" href="#"><i class="fas fa-user-plus me-2 text-info"></i>Register Driver</a></li>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-3"
+                    aria-labelledby="quickActionsDropdown">
+                    <li><a class="dropdown-item py-2" href="#">
+                        <i class="fas fa-plus-circle me-2 text-primary"></i>New Trip</a></li>
+                    <li><a class="dropdown-item py-2" href="#">
+                        <i class="fas fa-bus-alt me-2 text-success"></i>Add Vehicle</a></li>
+                    <li><a class="dropdown-item py-2" href="#">
+                        <i class="fas fa-user-plus me-2 text-info"></i>Register Driver</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item py-2" href="#"><i class="fas fa-file-invoice me-2 text-warning"></i>Generate Report</a></li>
+                    <li><a class="dropdown-item py-2" href="#">
+                        <i class="fas fa-file-invoice me-2 text-warning"></i>Generate Report</a></li>
                 </ul>
             </div>
 
             <!-- Notifications Dropdown -->
-            <div class="dropdown me-3">
-                <button class="btn btn-light rounded-circle p-2 position-relative" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px;">
-                    <i class="fas fa-bell text-muted" style="font-size: 1.1rem;"></i>
-                    <span class="position-absolute top-1 start-100 translate-middle p-1.5 bg-danger border border-light rounded-circle">
+            <div class="dropdown">
+                <button class="btn btn-light rounded-circle p-0 position-relative flex-shrink-0"
+                        type="button"
+                        id="notificationsDropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        style="width: 38px; height: 38px;">
+                    <i class="fas fa-bell text-muted" style="font-size: 1rem;"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
                         <span class="visually-hidden">New alerts</span>
                     </span>
                 </button>
-                <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-2 p-0 rounded-4" aria-labelledby="notificationsDropdown" style="width: 320px; overflow: hidden;">
-                    <div class="px-3 py-2.5 bg-light border-bottom d-flex justify-content-between align-items-center">
-                        <span class="fw-bold">Notifications</span>
+                <!-- Notification panel: responsive width -->
+                <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-2 p-0 rounded-4"
+                     aria-labelledby="notificationsDropdown"
+                     style="width: min(320px, calc(100vw - 2rem)); overflow: hidden;">
+                    <div class="px-3 py-2 border-bottom d-flex justify-content-between align-items-center"
+                         style="background: var(--bg-card);">
+                        <span class="fw-bold small">Notifications</span>
                         <a href="#" class="text-decoration-none small text-primary">Mark all read</a>
                     </div>
                     <div class="list-group list-group-flush" style="max-height: 240px; overflow-y: auto;">
                         <a href="#" class="list-group-item list-group-item-action p-3 d-flex align-items-start border-bottom">
-                            <div class="bg-indigo-100 text-indigo p-2 rounded-circle me-3">
-                                <i class="fas fa-route"></i>
+                            <div class="rounded-circle me-3 flex-shrink-0 d-flex align-items-center justify-content-center"
+                                 style="width:36px;height:36px;background:rgba(99,102,241,0.1);">
+                                <i class="fas fa-route text-primary" style="font-size:0.85rem;"></i>
                             </div>
-                            <div class="flex-grow-1">
-                                <p class="mb-1 small fw-semibold">New trip assignment details ready</p>
+                            <div class="flex-grow-1 min-w-0">
+                                <p class="mb-1 small fw-semibold text-truncate">New trip assignment details ready</p>
                                 <span class="text-muted" style="font-size: 0.75rem;">5 mins ago</span>
                             </div>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action p-3 d-flex align-items-start border-bottom">
-                            <div class="bg-warning-100 text-warning p-2 rounded-circle me-3">
-                                <i class="fas fa-tools"></i>
+                            <div class="rounded-circle me-3 flex-shrink-0 d-flex align-items-center justify-content-center"
+                                 style="width:36px;height:36px;background:rgba(245,158,11,0.1);">
+                                <i class="fas fa-tools text-warning" style="font-size:0.85rem;"></i>
                             </div>
-                            <div class="flex-grow-1">
-                                <p class="mb-1 small fw-semibold">Vehicle #BT-0941 Maintenance alert</p>
+                            <div class="flex-grow-1 min-w-0">
+                                <p class="mb-1 small fw-semibold text-truncate">Vehicle #BT-0941 Maintenance alert</p>
                                 <span class="text-muted" style="font-size: 0.75rem;">1 hour ago</span>
                             </div>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action p-3 d-flex align-items-start">
-                            <div class="bg-success-100 text-success p-2 rounded-circle me-3">
-                                <i class="fas fa-check-circle"></i>
+                            <div class="rounded-circle me-3 flex-shrink-0 d-flex align-items-center justify-content-center"
+                                 style="width:36px;height:36px;background:rgba(16,185,129,0.1);">
+                                <i class="fas fa-check-circle text-success" style="font-size:0.85rem;"></i>
                             </div>
-                            <div class="flex-grow-1">
-                                <p class="mb-1 small">Weekly operational report generated</p>
+                            <div class="flex-grow-1 min-w-0">
+                                <p class="mb-1 small text-truncate">Weekly operational report generated</p>
                                 <span class="text-muted" style="font-size: 0.75rem;">4 hours ago</span>
                             </div>
                         </a>
                     </div>
-                    <a href="#" class="dropdown-item text-center py-2 bg-light border-top small text-muted">View all notifications</a>
+                    <a href="#" class="dropdown-item text-center py-2 border-top small text-muted"
+                       style="background: var(--bg-card);">View all notifications</a>
                 </div>
             </div>
 
             <!-- Profile Dropdown -->
             <div class="dropdown">
-                <button class="btn d-flex align-items-center p-1 rounded-pill hover-bg" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="border: 1px solid var(--border-color, #e2e8f0);">
+                <button class="btn d-flex align-items-center p-1 rounded-pill hover-bg flex-shrink-0"
+                        type="button"
+                        id="profileDropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        style="border: 1px solid var(--border-color, #e2e8f0);">
                     {% if user.profile.profile_picture %}
-                        <img src="{{ user.profile.profile_picture.url }}" alt="Avatar" class="rounded-circle object-fit-cover me-2" style="width: 32px; height: 32px;">
+                        <img src="{{ user.profile.profile_picture.url }}"
+                             alt="Avatar"
+                             class="rounded-circle object-fit-cover"
+                             style="width: 32px; height: 32px;">
                     {% else %}
-                        <div class="bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-2" style="width: 32px; height: 32px; font-size: 0.85rem; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0"
+                             style="width: 32px; height: 32px; font-size: 0.85rem;
+                                    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
                             {{ user.username|make_list|first|upper }}
                         </div>
                     {% endif %}
-                    <span class="d-none d-md-inline me-2 fw-medium text-dark" style="font-size: 0.9rem;">
+                    <span class="d-none d-md-inline mx-2 fw-medium" style="font-size: 0.9rem; color: var(--text-primary);">
                         {{ user.first_name|default:user.username }}
                     </span>
-                    <i class="fas fa-chevron-down text-muted d-none d-md-inline" style="font-size: 0.75rem; margin-right: 6px;"></i>
+                    <i class="fas fa-chevron-down text-muted d-none d-md-inline me-1" style="font-size: 0.7rem;"></i>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-1 rounded-3" aria-labelledby="profileDropdown" style="width: 220px;">
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-1 rounded-3"
+                    aria-labelledby="profileDropdown"
+                    style="min-width: 200px;">
                     <li class="px-3 py-2 border-bottom">
                         <span class="d-block fw-bold" style="font-size: 0.9rem;">{{ user.get_full_name|default:user.username }}</span>
-                        <span class="badge bg-indigo-soft text-indigo font-weight-bold" style="font-size: 0.75rem;">
+                        <span class="badge bg-indigo-soft fw-bold" style="font-size: 0.72rem; color: #818cf8;">
                             {{ user.profile.get_role_display|default:"User" }}
                         </span>
                     </li>
-                    <li><a class="dropdown-item py-2 mt-1" href="{% url 'profile' %}"><i class="fas fa-user-circle me-2 text-muted"></i>My Profile</a></li>
-                    <li><a class="dropdown-item py-2" href="#"><i class="fas fa-cog me-2 text-muted"></i>Account Settings</a></li>
+                    <li><a class="dropdown-item py-2 mt-1" href="{% url 'profile' %}">
+                        <i class="fas fa-user-circle me-2 text-muted"></i>My Profile</a></li>
+                    <li><a class="dropdown-item py-2" href="#">
+                        <i class="fas fa-cog me-2 text-muted"></i>Account Settings</a></li>
                     {% if user.is_staff %}
-                    <li><a class="dropdown-item py-2" href="{% url 'admin:index' %}" target="_blank"><i class="fas fa-user-shield me-2 text-muted"></i>Django Admin</a></li>
+                    <li><a class="dropdown-item py-2" href="{% url 'admin:index' %}" target="_blank">
+                        <i class="fas fa-user-shield me-2 text-muted"></i>Django Admin</a></li>
                     {% endif %}
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item py-2 text-danger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</a></li>
+                    <li><a class="dropdown-item py-2 text-danger" href="{% url 'logout' %}">
+                        <i class="fas fa-sign-out-alt me-2"></i>Sign Out</a></li>
                 </ul>
             </div>
 

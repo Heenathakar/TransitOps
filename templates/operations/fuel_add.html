@@ -1,11 +1,69 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
 
-<h2>Add Fuel</h2>
+{% block title %}Log Fuel | TransitOps{% endblock %}
 
-<form method="POST">
-  {% csrf_token %} {{form.as_p}}
+{% block page_title %}Log Fuel{% endblock %}
 
-  <button class="btn btn-success">Save</button>
-</form>
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-7">
+        <div class="card border-0 rounded-4 shadow-sm">
+            <div class="card-body p-4 p-md-5">
 
+                <div class="d-flex align-items-center mb-4">
+                    <div class="rounded-3 me-3 d-flex align-items-center justify-content-center"
+                         style="width:48px;height:48px;background:rgba(245,158,11,.1);">
+                        <i class="fas fa-gas-pump" style="font-size:1.3rem;color:#f59e0b;"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-0">Fuel Log Entry</h4>
+                        <p class="text-muted small mb-0">Record fuel fill-up for a vehicle</p>
+                    </div>
+                </div>
+
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label fw-semibold">Vehicle <span class="text-danger">*</span></label>
+                            {{ form.vehicle }}
+                            {% if form.vehicle.errors %}<div class="text-danger small mt-1">{{ form.vehicle.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label fw-semibold">Trip <span class="text-danger">*</span></label>
+                            {{ form.trip }}
+                            {% if form.trip.errors %}<div class="text-danger small mt-1">{{ form.trip.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-semibold">Liters <span class="text-danger">*</span></label>
+                            {{ form.liters }}
+                            {% if form.liters.errors %}<div class="text-danger small mt-1">{{ form.liters.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-semibold">Cost (₹) <span class="text-danger">*</span></label>
+                            {{ form.cost }}
+                            {% if form.cost.errors %}<div class="text-danger small mt-1">{{ form.cost.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-semibold">Date <span class="text-danger">*</span></label>
+                            {{ form.date }}
+                            {% if form.date.errors %}<div class="text-danger small mt-1">{{ form.date.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mt-4 pt-3 border-top">
+                        <button type="submit" class="btn btn-primary rounded-3 px-4">
+                            <i class="fas fa-check me-2"></i>Save Fuel Log
+                        </button>
+                        <a href="{% url 'fuel_list' %}" class="btn btn-light rounded-3 px-4 text-muted">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Fuel Logs
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,73 +1,115 @@
 {% extends 'base.html' %}
 
+{% block title %}Vehicles | TransitOps{% endblock %}
+
+{% block page_title %}Vehicle Fleet{% endblock %}
+
 {% block content %}
-
-<div class="container mt-4">
-
-<h2>Vehicle Management</h2>
-
-<a href="{% url 'vehicle_add' %}" class="btn btn-primary mb-3">
-    Add Vehicle
-</a>
-
-
-<table class="table table-bordered">
-
-<tr>
-<th>Vehicle Number</th>
-<th>Type</th>
-<th>Model</th>
-<th>Capacity</th>
-<th>Status</th>
-<th>Action</th>
-</tr>
-
-
-{% for vehicle in vehicles %}
-
-<tr>
-
-<td>{{vehicle.vehicle_number}}</td>
-
-<td>{{vehicle.vehicle_type}}</td>
-
-<td>{{vehicle.model}}</td>
-
-<td>{{vehicle.capacity}}</td>
-
-<td>{{vehicle.status}}</td>
-
-
-<td>
-
-<a href="#" class="btn btn-warning btn-sm">
-Edit
-</a>
-
-<a href="#" class="btn btn-danger btn-sm">
-Delete
-</a>
-
-</td>
-
-</tr>
-
-{% empty %}
-
-<tr>
-<td colspan="6">
-No Vehicles Available
-</td>
-</tr>
-
-
-{% endfor %}
-
-
-</table>
-
-
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+    <p class="text-muted mb-0 small">Manage your entire vehicle fleet — add, edit, or retire vehicles.</p>
+    <a href="{% url 'vehicle_add' %}" class="btn btn-primary rounded-3">
+        <i class="fas fa-plus me-2"></i>Add Vehicle
+    </a>
 </div>
 
+<div class="card border-0 rounded-4 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead style="background: var(--bg-body);">
+                    <tr>
+                        <th class="px-4 py-3 fw-semibold text-muted small text-uppercase">Vehicle No.</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase">Type</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase">Model</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase">Capacity</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase">Status</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vehicle in vehicles %}
+                    <tr>
+                        <td class="px-4 py-3">
+                            <span class="fw-bold">{{ vehicle.vehicle_number }}</span>
+                        </td>
+                        <td class="py-3">{{ vehicle.vehicle_type }}</td>
+                        <td class="py-3">{{ vehicle.model }}</td>
+                        <td class="py-3">{{ vehicle.capacity }} kg</td>
+                        <td class="py-3">
+                            {% if vehicle.status == 'Available' %}
+                                <span class="badge rounded-pill px-3 py-1"
+                                      style="background:rgba(16,185,129,.1);color:#10b981;">
+                                    <i class="fas fa-circle me-1" style="font-size:.5rem;"></i>{{ vehicle.status }}
+                                </span>
+                            {% else %}
+                                <span class="badge rounded-pill px-3 py-1"
+                                      style="background:rgba(245,158,11,.1);color:#f59e0b;">
+                                    <i class="fas fa-circle me-1" style="font-size:.5rem;"></i>{{ vehicle.status }}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="py-3 pe-4 text-end">
+                            <a href="{% url 'vehicle_edit' vehicle.pk %}"
+                               class="btn btn-sm btn-outline-primary rounded-2 me-1">
+                                <i class="fas fa-pen me-1"></i>Edit
+                            </a>
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger rounded-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal{{ vehicle.pk }}">
+                                <i class="fas fa-trash me-1"></i>Delete
+                            </button>
 
+                            <!-- Delete Confirmation Modal -->
+                            <div class="modal fade" id="deleteModal{{ vehicle.pk }}" tabindex="-1"
+                                 aria-labelledby="deleteModalLabel{{ vehicle.pk }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content border-0 shadow rounded-4">
+                                        <div class="modal-header border-0 pb-0">
+                                            <h5 class="modal-title fw-bold" id="deleteModalLabel{{ vehicle.pk }}">
+                                                <i class="fas fa-exclamation-triangle text-danger me-2"></i>
+                                                Confirm Delete
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body pt-2">
+                                            <p class="text-muted">
+                                                Are you sure you want to delete vehicle
+                                                <strong>{{ vehicle.vehicle_number }}</strong>?
+                                                This action cannot be undone.
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer border-0 pt-0">
+                                            <button type="button" class="btn btn-light rounded-3"
+                                                    data-bs-dismiss="modal">Cancel</button>
+                                            <form method="POST"
+                                                  action="{% url 'vehicle_delete' vehicle.pk %}"
+                                                  class="d-inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger rounded-3">
+                                                    <i class="fas fa-trash me-1"></i>Yes, Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            <i class="fas fa-bus mb-3 d-block" style="font-size:2.5rem;opacity:.25;"></i>
+                            <p class="mb-2">No vehicles in the fleet yet.</p>
+                            <a href="{% url 'vehicle_add' %}" class="btn btn-sm btn-primary rounded-3">
+                                <i class="fas fa-plus me-1"></i>Add First Vehicle
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

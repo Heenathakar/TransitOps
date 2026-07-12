@@ -160,3 +160,72 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--danger-light) !important;
     color: var(--danger) !important;
 }
+
+/* ============================================
+   Responsive Layout Utilities
+   ============================================ */
+
+/* Prevent flex children from overflowing their container */
+.min-w-0 {
+    min-width: 0;
+}
+
+/* Ensure the main layout row never causes horizontal scroll */
+.container-fluid {
+    overflow-x: hidden;
+}
+
+/* Make sure all images scale within their containers */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Page main content: reduce padding on very small screens */
+@media (max-width: 575.98px) {
+    main {
+        padding: 0.75rem !important;
+    }
+}
+
+/* Sidebar occupies full height of its column */
+.col-lg-2 {
+    min-height: calc(100vh - 61px);
+    position: sticky;
+    top: 61px;
+    align-self: flex-start;
+    height: calc(100vh - 61px);
+    overflow-y: auto;
+    z-index: 900;
+}
+
+/* Prevent sidebar from influencing layout on mobile */
+@media (max-width: 991.98px) {
+    .col-lg-2 {
+        display: none !important;
+    }
+}
+
+/* Dark mode: offcanvas header and body */
+[data-bs-theme="dark"] .offcanvas {
+    background-color: var(--bg-sidebar) !important;
+    border-right-color: var(--border-color) !important;
+}
+
+/* Navbar: prevent overflow on small screens */
+.navbar-brand {
+    max-width: calc(100vw - 160px);
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Footer responsive adjustments */
+.footer {
+    background-color: var(--bg-card) !important;
+    color: var(--text-secondary);
+}
+
+/* Bootstrap row must not overflow */
+.row {
+    overflow-x: clip;
+}

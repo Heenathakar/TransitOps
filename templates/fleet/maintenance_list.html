@@ -1,83 +1,99 @@
 {% extends 'base.html' %}
 
+{% block title %}Maintenance | TransitOps{% endblock %}
+
+{% block page_title %}Maintenance Logs{% endblock %}
 
 {% block content %}
-
-
-<div class="container mt-4">
-
-
-<h2>Maintenance Management</h2>
-
-
-<a href="{% url 'maintenance_add' %}"
-class="btn btn-primary">
-
-Add Maintenance
-
-</a>
-
-
-
-<table class="table table-bordered mt-3">
-
-
-<tr>
-
-<th>Vehicle</th>
-<th>Date</th>
-<th>Description</th>
-<th>Cost</th>
-
-</tr>
-
-
-{% for item in data %}
-
-
-<tr>
-
-<td>
-{{item.vehicle}}
-</td>
-
-
-<td>
-{{item.date}}
-</td>
-
-
-<td>
-{{item.description}}
-</td>
-
-
-<td>
-{{item.cost}}
-</td>
-
-
-</tr>
-
-
-{% empty %}
-
-<tr>
-
-<td colspan="4">
-No Maintenance Records
-</td>
-
-</tr>
-
-
-{% endfor %}
-
-
-</table>
-
-
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+    <p class="text-muted mb-0 small">Track all vehicle maintenance, repairs, and service records.</p>
+    <a href="{% url 'maintenance_add' %}" class="btn btn-primary rounded-3">
+        <i class="fas fa-plus me-2"></i>Log Maintenance
+    </a>
 </div>
 
+<div class="card border-0 rounded-4 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead style="background: var(--bg-body);">
+                    <tr>
+                        <th class="px-4 py-3 fw-semibold text-muted small text-uppercase">Vehicle</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase">Date</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase d-none d-md-table-cell">Description</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase">Cost</th>
+                        <th class="py-3 fw-semibold text-muted small text-uppercase text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data %}
+                    <tr>
+                        <td class="px-4 py-3">
+                            <span class="badge rounded-pill px-3 py-1"
+                                  style="background:rgba(239,68,68,.1);color:#ef4444;">
+                                <i class="fas fa-bus me-1"></i>{{ item.vehicle }}
+                            </span>
+                        </td>
+                        <td class="py-3">{{ item.date }}</td>
+                        <td class="py-3 d-none d-md-table-cell">
+                            <span class="text-muted">{{ item.description|truncatechars:50 }}</span>
+                        </td>
+                        <td class="py-3 fw-semibold">₹{{ item.cost }}</td>
+                        <td class="py-3 pe-4 text-end">
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger rounded-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteMaintModal{{ item.pk }}">
+                                <i class="fas fa-trash me-1"></i>Delete
+                            </button>
 
+                            <!-- Delete Modal -->
+                            <div class="modal fade" id="deleteMaintModal{{ item.pk }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content border-0 shadow rounded-4">
+                                        <div class="modal-header border-0">
+                                            <h5 class="modal-title fw-bold">
+                                                <i class="fas fa-exclamation-triangle text-danger me-2"></i>Confirm Delete
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body pt-0">
+                                            <p class="text-muted">
+                                                Delete maintenance record for <strong>{{ item.vehicle }}</strong>
+                                                on <strong>{{ item.date }}</strong>?
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer border-0 pt-0">
+                                            <button type="button" class="btn btn-light rounded-3"
+                                                    data-bs-dismiss="modal">Cancel</button>
+                                            <form method="POST"
+                                                  action="{% url 'maintenance_delete' item.pk %}"
+                                                  class="d-inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger rounded-3">
+                                                    <i class="fas fa-trash me-1"></i>Yes, Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            <i class="fas fa-tools mb-3 d-block" style="font-size:2.5rem;opacity:.25;"></i>
+                            <p class="mb-2">No maintenance records found.</p>
+                            <a href="{% url 'maintenance_add' %}" class="btn btn-sm btn-primary rounded-3">
+                                <i class="fas fa-plus me-1"></i>Log First Maintenance
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

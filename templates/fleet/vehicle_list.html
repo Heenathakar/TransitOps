@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>Vehicle Management</h2>
+
+<a href="{% url 'vehicle_add' %}" class="btn btn-primary mb-3">
+    Add Vehicle
+</a>
+
+
+<table class="table table-bordered">
+
+<tr>
+<th>Vehicle Number</th>
+<th>Type</th>
+<th>Model</th>
+<th>Capacity</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+
+{% for vehicle in vehicles %}
+
+<tr>
+
+<td>{{vehicle.vehicle_number}}</td>
+
+<td>{{vehicle.vehicle_type}}</td>
+
+<td>{{vehicle.model}}</td>
+
+<td>{{vehicle.capacity}}</td>
+
+<td>{{vehicle.status}}</td>
+
+
+<td>
+
+<a href="#" class="btn btn-warning btn-sm">
+Edit
+</a>
+
+<a href="#" class="btn btn-danger btn-sm">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="6">
+No Vehicles Available
+</td>
+</tr>
+
+
+{% endfor %}
+
+
+</table>
+
+
+</div>
+
+
+{% endblock %}
